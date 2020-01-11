@@ -1,0 +1,8 @@
+#unwanted file extensions
+*.qpf
+*.qsf
+*.qws
+*.bak
+
+#unwanted directories
+db/
