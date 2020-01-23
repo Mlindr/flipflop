@@ -3,7 +3,10 @@
 --					12.1.2020 *Added generate and process for T flipflop with and 
 --								  without reset
 --								 *Added generate and process for D flipflop with reset
---								 *Finished project
+--
+--					23.1.2020 *fixed T flipflop logic
+--								 *Minor changes in D flipflop logic
+--
 --authors:	   Mirko Lindroth
 --project: 	   flipflop.vhd
 --Description: Basic flipflops designs.
@@ -52,12 +55,18 @@ begin
 				if(reset='0') then
 					if rising_edge(clk) then
 						if(TDK_in='1') then
-							Q_sig<=(not Q_sig);
-							Qnot_sig<=(not Qnot_sig);
+							Qnot_sig<=Q_sig;
+							Q_sig<=not Q_sig;
+						else
+							Q_sig<=Q_sig;
+							Qnot_sig<=not Q_sig;
 						end if;
+					else
+						Q_sig<=Q_sig;
+						Qnot_sig<=not Q_sig;
 					end if;
 				else
-					Qnot_sig<='1';
+					Qnot_sig<='0';
 					Q_sig<='0';
 				end if;
 			end process;
@@ -72,10 +81,10 @@ begin
 						Qnot_sig<=not TDK_in;
 					else
 						Q_sig<=Q_sig;
-						Qnot_sig<=Qnot_sig;
+						Qnot_sig<=not Q_sig;
 					end if;
 				else
-					Qnot_sig<='1';
+					Qnot_sig<='0';
 					Q_sig<='0';
 				end if;
 			end process;
@@ -88,8 +97,8 @@ begin
 					if rising_edge(clk) then
 						if(TDK_in='1') then
 							if(J_in='1') then
-								Qnot_sig<=not Qnot_sig;
-								Q_sig<=not Q_sig;
+								Qnot_sig<=Q_sig;
+								Q_sig<=Qnot_sig;
 							else
 								Q_sig<='0';
 								Qnot_sig<='1';
@@ -100,15 +109,15 @@ begin
 								Qnot_sig<='0';
 							else
 								Q_sig<=Q_sig;
-								Qnot_sig<=Qnot_sig;
+								Qnot_sig<=not Q_sig;
 							end if;
 						end if;
 					else
 						Q_sig<=Q_sig;
-						Qnot_sig<=Qnot_sig;
+						Qnot_sig<=not Q_sig;
 					end if;
 				else
-					Qnot_sig<='1';
+					Qnot_sig<='0';
 					Q_sig<='0';
 				end if;
 			end process;
@@ -116,41 +125,47 @@ begin
 	end generate;
 	
 	--fliflops without reset
-	RST_DI_gen:	if RESET_EN=false generate
+	RST_DIS_gen:	if RESET_EN=false generate
 		--T flip flop
-		Tff_gen: if Tff_EN=true generate
-			Tff_proc: process(clk)
+		Tff_rst_gen: if Tff_EN=true generate
+			Tff_rst_proc: process(clk)
 			begin
 				if rising_edge(clk) then
 					if(TDK_in='1') then
+						Qnot_sig<=Q_sig;
 						Q_sig<=not Q_sig;
-						Qnot_sig<=not Qnot_sig;
+					else
+						Q_sig<=Q_sig;
+						Qnot_sig<=not Q_sig;
 					end if;
+				else
+					Q_sig<=Q_sig;
+					Qnot_sig<=not Q_sig;
 				end if;
 			end process;
 		end generate;
 		--D flip flop
-		Dff_gen:	if Dff_EN=true generate
-			Dff_proc: process(clk)
+		Dff_rst_gen:	if Dff_EN=true generate
+			Dff_rst_proc: process(clk)
 			begin
 				if rising_edge(clk) then
 					Q_sig<=TDK_in;
 					Qnot_sig<=not TDK_in;
 				else
 					Q_sig<=Q_sig;
-					Qnot_sig<=Qnot_sig;
+					Qnot_sig<=not Q_sig;
 				end if;
 			end process;
 		end generate;
 		--JK flip flop
-		JKff_gen: if JKff_EN=true generate
-			JKff_proc: process(clk)
+		JKff_rst_gen: if JKff_EN=true generate
+			JKff_rst_proc: process(clk)
 			begin
 				if rising_edge(clk) then
 					if(TDK_in='1') then
 						if(J_in='1') then
-							Q_sig<=not Q_sig;
-							Qnot_sig<=not Qnot_sig;
+							Qnot_sig<=Q_sig;
+							Q_sig<=Qnot_sig;
 						else
 							Q_sig<='0';
 							Qnot_sig<='1';
@@ -161,12 +176,12 @@ begin
 							Qnot_sig<='0';
 						else
 							Q_sig<=Q_sig;
-							Qnot_sig<=Qnot_sig;
+							Qnot_sig<=not Q_sig;
 						end if;
 					end if;
 				else
 					Q_sig<=Q_sig;
-					Qnot_sig<=Qnot_sig;
+					Qnot_sig<=not Q_sig;
 				end if;
 			end process;
 		end generate;
