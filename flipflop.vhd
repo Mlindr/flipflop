@@ -24,7 +24,7 @@ entity flipflop is
 		Tff_EN		:boolean		:=false;
 		Dff_EN		:boolean		:=false;
 		JKff_EN		:boolean		:=false;
-		RESET_EN		:boolean		:=false
+		RESET_EN	:boolean		:=false
 		);
 	port(
 		TDK_in	:in std_logic	:='0';

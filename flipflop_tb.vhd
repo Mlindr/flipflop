@@ -12,8 +12,10 @@
 --												instantiation of D flipflop
 --												instantiation of JK flipflop
 --
---								 *Modified: I/O testing process
---								 *Tested:	flipflops with reset
+--							  *Modified: I/O testing process
+--							  *Tested:	simulated flipflops with reset
+--
+--					24.1.2020 *Tested:	simulated flipflops without reset
 --
 --authors:	   Mirko Lindroth
 --project: 	   flipflop_tb.vhd
@@ -70,6 +72,7 @@ end component;
 
 begin
 
+	--testing flipflops with reset
 	TB_RST_EN_gen: if TB_RST_EN=true generate
 		--T flipflop
 		Tff_rst_en_test: flipflop
@@ -123,6 +126,7 @@ begin
 				);
 	end generate;
 	
+	--testing flipflops without reset
 	TB_RST_DIS_gen: if TB_RST_EN=false generate
 		--T flipflop
 		Tff_rst_dis_test: flipflop
@@ -211,9 +215,9 @@ begin
 	--reset generation
 	reset_proc: process
 	begin
-		wait for 80 ns;
+		wait for 25 ns;
 		reset_sig<='1';
-		wait for 15 ns;
+		wait for 20 ns;
 		reset_sig<='0';
 	end process;
 	
