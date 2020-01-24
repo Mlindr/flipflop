@@ -184,9 +184,9 @@ begin
 	--clock signal generation
 	clk_signal_proc: process
 	begin
-		if(clk='1') then		--up for 5 ns
+		if(clk='1') then	
 			wait for 5 ns;
-		else					--down for 10 ns
+		else					
 			wait for 5 ns;
 		end if;
 		clk<=not clk;		--invert clock signal
